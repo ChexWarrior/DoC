@@ -18,6 +18,8 @@
   };
 
   // TODO: Change methods to take error and success callbacks
+  // TODO: Add unit tests
+  // TODO: Add description to methods...
 
   var shuffleDeck = function(callback, deckID) {
     // TODO: Default parameters and validity checking
