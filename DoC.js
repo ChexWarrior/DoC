@@ -76,7 +76,7 @@
     if(cardsToAdd.length > 0) {
       addedCards = '?cards=';
       cardsToAdd.forEach(function(card) {
-        addedCards += card + ',';
+        addedCards += card.code + ',';
       });
 
       // remove trailing comma
