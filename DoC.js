@@ -17,6 +17,11 @@
     xhr.send();
   };
 
+  var shuffleDeck = function(callback, deckID) {
+    var apiAction = API_ENDPOINT + '/deck/' + deckID + '/shuffle/';
+    request('GET', apiAction, callback);
+  };
+
   var createNewDeck = function(callback, shuffle, cards, numDecks) {
     var apiAction = API_ENDPOINT + '/deck/new/';
     var partialDeck = '';
