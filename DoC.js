@@ -22,6 +22,11 @@
     request('GET', apiAction, callback);
   };
 
+  var drawFromDeck = function(callback, deckID, numCards) {
+    var apiAction = API_ENDPOINT + '/deck/' + deckID + '/draw/?count=' + numCards;
+    request('GET', apiAction, callback);
+  }
+
   var createDeck = function(callback, shuffle, cards, numDecks) {
     var apiAction = API_ENDPOINT + '/deck/new/';
     var partialDeck = '';
@@ -79,6 +84,7 @@
   var DoC = {
     createDeck: createDeck,
     shuffleDeck: shuffleDeck,
+    drawFromDeck: drawFromDeck,
     addToPile: addToPile
   };
 
