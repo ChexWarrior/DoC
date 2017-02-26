@@ -54,14 +54,32 @@
 
     // add number of decks, if a partial deck is specified only one deck can be created
     if(numberDecks > 1 && !partialDeck) apiAction += '?deck_count=' + numberDecks;
+    request('GET', apiAction, callback);
+  };
 
+  var addToPile = function(callback, pileName, sourceDeck, cardsToAdd) {
+    var apiAction = API_ENDPOINT + '/deck/' + sourceDeck + '/pile/' + pileName + '/add/';
+    var addedCards = '';
+
+    if(cardsToAdd.length > 0) {
+      addedCards = '?cards=';
+      cardsToAdd.forEach(function(card) {
+        addedCards += card + ',';
+      });
+
+      // remove trailing comma
+      addedCards = addedCards.substr(0, addedCards.lastIndexOf(','));
+    }
+
+    apiAction += addedCards;
     request('GET', apiAction, callback);
   };
 
   // create final DoC object
   var DoC = {
     createDeck: createDeck,
-    shuffleDeck: shuffleDeck
+    shuffleDeck: shuffleDeck,
+    addToPile: addToPile
   };
 
   // attach to window
