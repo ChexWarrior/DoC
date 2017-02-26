@@ -22,7 +22,7 @@
     request('GET', apiAction, callback);
   };
 
-  var createNewDeck = function(callback, shuffle, cards, numDecks) {
+  var createDeck = function(callback, shuffle, cards, numDecks) {
     var apiAction = API_ENDPOINT + '/deck/new/';
     var partialDeck = '';
 
@@ -60,7 +60,8 @@
 
   // create final DoC object
   var DoC = {
-    newDeck: createNewDeck
+    createDeck: createDeck,
+    shuffleDeck: shuffleDeck
   };
 
   // attach to window
