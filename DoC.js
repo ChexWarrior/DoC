@@ -17,12 +17,16 @@
     xhr.send();
   };
 
+  // TODO: Change methods to take error and success callbacks
+
   var shuffleDeck = function(callback, deckID) {
+    // TODO: Default parameters and validity checking
     var apiAction = API_ENDPOINT + '/deck/' + deckID + '/shuffle/';
     request('GET', apiAction, callback);
   };
 
   var drawFromDeck = function(callback, deckID, numCards) {
+    // TODO: Default parameters and validity checking
     var apiAction = API_ENDPOINT + '/deck/' + deckID + '/draw/?count=' + numCards;
     request('GET', apiAction, callback);
   }
@@ -63,6 +67,7 @@
   };
 
   var addToPile = function(callback, pileName, sourceDeck, cardsToAdd) {
+    // TODO: Default parameters and validity checking
     var apiAction = API_ENDPOINT + '/deck/' + sourceDeck + '/pile/' + pileName + '/add/';
     var addedCards = '';
 
