@@ -55,7 +55,7 @@
     // add number of decks, if a partial deck is specified only one deck can be created
     if(numberDecks > 1 && !partialDeck) apiAction += '?deck_count=' + numberDecks;
 
-    return request('GET', apiAction, callback);
+    request('GET', apiAction, callback);
   };
 
   // create final DoC object
