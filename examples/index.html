@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <link rel="stylesheet" href="">
+</head>
+<body>
+  <script src="../DoC.js"></script>
+  <script>
+    var shuffleCallback = function(response) {
+      console.log('Shuffle deck!');
+      //console.dir(response);
+      //DoC.addToPile(addToPileCallback, 'discard', response.deck_id, ['AS']);
+    };
+
+    var newDeckCallback = function(response) {
+      console.dir(response);
+      //DoC.shuffleDeck(shuffleCallback, response.deck_id);
+      DoC.drawFromDeck(drawFromDeckCallback, response.deck_id, 3);
+    };
+
+    var addToPileCallback = function(response) {
+      console.log('Add to pile!');
+      console.dir(response);
+    };
+
+    var drawFromDeckCallback = function(response) {
+      console.log('Draw from deck');
+      console.dir(response);
+      var drawnCards = response.cards;
+      DoC.addToPile(addToPileCallback, 'discard', response.deck_id, drawnCards);
+    };
+
+    DoC.createDeck(newDeckCallback, true, ['AS', '2S', '3S', '4S'], 5);
+  </script>  
+</body>
+</html>
