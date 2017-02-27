@@ -1,5 +1,5 @@
 {
-  "name": "jsdoclib",
+  "name": "DoC",
   "version": "1.0.0",
   "description": "JS wrapper for Deck of Cards API",
   "main": "DoC.js",
