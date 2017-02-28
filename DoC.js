@@ -1,16 +1,20 @@
 (function() {
   var API_ENDPOINT = 'https://deckofcardsapi.com/api';
 
-  var request = function(method, uri, callback) {
+  var request = function(method, uri, callbacks) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, uri, true);
     xhr.responseType = 'json';
 
     xhr.onload = function(event) {
-      if(this.status === 200) {
-        callback(this.response);
-      } else {
-        console.log('Error!');
+      if(callbacks) {
+        if(this.status === 200) {
+          if(callbacks.success) callbacks.success(this.response);
+        } else {
+          if(callbacks.failure) callbacks.failure(this.response);
+        }
+
+        if(callbacks.complete) callbacks.complete(this.response);
       }
     };
 
