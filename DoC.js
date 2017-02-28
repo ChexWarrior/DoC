@@ -18,6 +18,13 @@
       }
     };
 
+    xhr.onerror = function(error) {
+      if(callbacks) {
+        if(callbacks.failure) callbacks.failure(error);
+        if(callbacks.complete) callbacks.complete(error);
+      }
+    };
+
     xhr.send();
   };
 
