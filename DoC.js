@@ -37,22 +37,30 @@
     request('GET', apiAction, callback);
   }
 
-  var createDeck = function(callback, shuffle, cards, numDecks) {
+  /**
+   * @param  {object} callbacks Should consist of three properties: success, failure, complete
+   *                  Each callback should take one parameter that will represent the deck in case
+   *                  off success and the error object in case of failure.
+   * @param  {object} parameters Can consist of three properties:
+   *         {bool} shuffle If true the deck will be shuffled on creation. Defaults to false.
+   *         {array} partialDeck An array of card codes that the deck will contain if the array isn't empty.
+   *         {number} numDecks The amount of cards this deck will contain based on amount of decks.
+   *                  1 deck gives 52 cards, 2 decks gives 104, etc. Defaults to one. If a value is specified
+   *                  for the partialDeck parameter this value is ignored.
+   * @return {object} deck
+   */
+  var createDeck = function(callbacks, parameters) {
     var apiAction = API_ENDPOINT + '/deck/new/';
     var partialDeck = '';
+    var startingCards = [];
+    var numberDecks = 1;
 
-    // if true the new deck will be shuffled on creation
-    var doShuffle = shuffle || false;
-
-    // number of new decks to create
-    var numberDecks = numDecks || 1;
-
-    // if a non-empty array the new deck will only contain these cards
-    var startingCards = cards || [];
+    if(parameters) {
+      if(parameters.shuffle) apiAction += 'shuffle/';
+      if(parameters.partialDeck) startingCards = parameters.partialDeck;
+      if(parameters.numDecks) numberDecks = parameters.numDecks;
+    }
     
-    // begin building final api uri...
-    if(doShuffle) apiAction += 'shuffle/';
-
     // build partial deck if specified
     if(startingCards.length > 0) {
       partialDeck = '?cards=';
@@ -69,7 +77,7 @@
 
     // add number of decks, if a partial deck is specified only one deck can be created
     if(numberDecks > 1 && !partialDeck) apiAction += '?deck_count=' + numberDecks;
-    request('GET', apiAction, callback);
+    request('GET', apiAction, callbacks);
   };
 
   var addToPile = function(callback, pileName, sourceDeck, cardsToAdd) {
