@@ -9,31 +9,23 @@
 <body>
   <script src="../DoC.js"></script>
   <script>
-    var shuffleCallback = function(response) {
-      console.log('Shuffle deck!');
-      //console.dir(response);
-      //DoC.addToPile(addToPileCallback, 'discard', response.deck_id, ['AS']);
+    var newDeckCallback = function(deck) {
+      console.log('Success or failure!');
+      console.dir(deck);
     };
 
-    var newDeckCallback = function(response) {
-      console.dir(response);
-      //DoC.shuffleDeck(shuffleCallback, response.deck_id);
-      DoC.drawFromDeck(drawFromDeckCallback, response.deck_id, 3);
+    var newDeckCompleted = function(error) {
+      console.log('Completed!');
+      console.dir(error);
     };
 
-    var addToPileCallback = function(response) {
-      console.log('Add to pile!');
-      console.dir(response);
-    };
-
-    var drawFromDeckCallback = function(response) {
-      console.log('Draw from deck');
-      console.dir(response);
-      var drawnCards = response.cards;
-      DoC.addToPile(addToPileCallback, 'discard', response.deck_id, drawnCards);
-    };
-
-    DoC.createDeck(newDeckCallback, true, ['AS', '2S', '3S', '4S'], 5);
+    DoC.createDeck({
+      success: newDeckCallback,
+      failure: newDeckCallback,
+      complete: newDeckCompleted
+    }, {
+      shuffled: true,
+    });
   </script>  
 </body>
 </html>
