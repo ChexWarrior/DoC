@@ -57,26 +57,30 @@
 
     if(parameters) {
       if(parameters.shuffle) apiAction += 'shuffle/';
-      if(parameters.partialDeck) startingCards = parameters.partialDeck;
-      if(parameters.numDecks) numberDecks = parameters.numDecks;
+      
+      if(parameters.partialDeck) {
+        startingCards = parameters.partialDeck;
+
+        if(startingCards.length > 0) {
+          partialDeck = '?cards=';
+
+          startingCards.forEach(function(card) {
+            partialDeck += card + ',';
+          });
+
+          // remove trailing comma
+          partialDeck = partialDeck.substr(0, partialDeck.lastIndexOf(','));
+          apiAction += partialDeck;
+        }
+      }
+
+      // add number of decks, if a partial deck is specified ignore this parameter
+      if(parameters.numDecks && !partialDeck)  {
+        numberDecks = parameters.numDecks;
+        apiAction += '?deck_count=' + numberDecks;
+      }
     }
-    
-    // build partial deck if specified
-    if(startingCards.length > 0) {
-      partialDeck = '?cards=';
 
-      startingCards.forEach(function(card) {
-        partialDeck += card + ',';
-      });
-
-      // remove trailing comma
-      partialDeck = partialDeck.substr(0, partialDeck.lastIndexOf(','));
-    }
-
-    apiAction += partialDeck;
-
-    // add number of decks, if a partial deck is specified only one deck can be created
-    if(numberDecks > 1 && !partialDeck) apiAction += '?deck_count=' + numberDecks;
     request('GET', apiAction, callbacks);
   };
 
