@@ -38,10 +38,24 @@
     request('GET', apiAction, callback);
   };
 
-  var drawFromDeck = function(callback, deckID, numCards) {
-    // TODO: Default parameters and validity checking
-    var apiAction = API_ENDPOINT + '/deck/' + deckID + '/draw/?count=' + numCards;
-    request('GET', apiAction, callback);
+  /**
+   * @param  {object} callbacks Should consist of three properties: success, failure, complete
+   *                  Each callback should take one parameter that will represent the deck in case
+   *                  off success and the error object in case of failure.
+   * @param  {object} parameters Can consist of two properties
+   *         {string} deckID The ID of the deck to draw from. This parameter is required.
+   *         {number} numCards The number of cards to draw from the deck. Defaults to 1.
+   * @return {[type]}
+   */
+  var drawFromDeck = function(callbacks, parameters) {
+    var apiAction = API_ENDPOINT + /deck/;
+
+    if(parameters) {
+      if (parameters.deckID) apiAction += parameters.deckID + '/draw/';
+      if (parameters.numCards) apiAction += '?count=' + parameters.numCards;
+    }
+    
+    request('GET', apiAction, callbacks);
   }
 
   /**
