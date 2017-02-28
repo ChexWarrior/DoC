@@ -1,6 +1,6 @@
 describe('A new deck', function() {
 
-  it('can shuffle the deck on creation', function(done) {
+  it('can be shuffled on initialization', function(done) {
     var callback = function(deck) {
       expect(deck.shuffled).toBe(true);
       done();
@@ -38,5 +38,13 @@ describe('A new deck', function() {
     DoC.createDeck(callback, false, cardsToAdd);
   });
 
-  
+  it('initialized as a partial deck and multiple decks only includes partial cards', function(done) {
+    var callback = function(deck) {
+      expect(deck.remaining).toBe(3);
+      done();
+    };
+
+    var cardsToAdd = ['AS', 'AD', 'AH'];
+    DoC.createDeck(callback, false, cardsToAdd, 3);
+  });
 });
