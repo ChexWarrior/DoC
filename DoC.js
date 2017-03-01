@@ -43,9 +43,16 @@
    *                  Each callback should take one parameter that will represent the deck in case
    *                  off success and the error object in case of failure.
    * @param  {object} parameters Can consist of two properties
-   *         {string} deckID The ID of the deck to draw from. This parameter is required.
-   *         {number} numCards The number of cards to draw from the deck. Defaults to 1.
-   * @return {[type]}
+   *         {string} parameters.deckID The ID of the deck to draw from. This parameter is required.
+   *         {number} parameters.numCards The number of cards to draw from the deck. Defaults to 1.
+   * @return {object} deck Represents current status of deck. Has the follwing properties:
+   *         {bool}   success True if operation was completed successfully
+   *         {array}  cards Array of cards objects. Each object has following properties:
+   *         {string} image Url containing picture of card type
+   *         {string} value Non-suit value of card (2-10, JACK, QUEEN, KING, ACE)
+   *         {string} suit Suit value of card (HEARTS, CLUBS, SPADES, DIAMONDS)
+   *         {string} code Two character code for Value and Suit combination of card. The
+   *                       Ace of Spades would have a code of "AS"
    */
   var drawFromDeck = function(callbacks, parameters) {
     var apiAction = API_ENDPOINT + /deck/;
@@ -63,12 +70,16 @@
    *                  Each callback should take one parameter that will represent the deck in case
    *                  off success and the error object in case of failure.
    * @param  {object} parameters Can consist of three properties:
-   *         {bool} shuffle If true the deck will be shuffled on creation. Defaults to false.
-   *         {array} partialDeck An array of card codes that the deck will contain if the array isn't empty.
-   *         {number} numDecks The amount of cards this deck will contain based on amount of decks.
+   *         {bool}   parameters.shuffle If true the deck will be shuffled on creation. Defaults to false.
+   *         {array}  parameters.partialDeck An array of card codes that the deck will contain if the array isn't empty.
+   *         {number} parameters.numDecks The amount of cards this deck will contain based on amount of decks.
    *                  1 deck gives 52 cards, 2 decks gives 104, etc. Defaults to one. If a value is specified
    *                  for the partialDeck parameter this value is ignored.
-   * @return {object} deck
+   * @return {object} deck Represents current status of  Has the following properties:
+   *         {bool}   success True if operation was completed successfully
+   *         {string} deck_id Unique ID for this deck
+   *         {bool}   shuffled True if deck was shuffled.
+   *         {number} remaining Amount of cards currently in deck
    */
   var createDeck = function(callbacks, parameters) {
     var apiAction = API_ENDPOINT + '/deck/new/';
