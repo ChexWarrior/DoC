@@ -7,6 +7,14 @@ describe('A new deck', function() {
     parameters = {};
   };
 
+  it('can be called with no parameters', function(done) {
+    callbacks.success = function(deck) {
+      expect(deck.deck_id).toEqual(jasmine.anything());
+      done();
+    };
+
+    DoC.createDeck(callbacks);
+  });
 
   it('can be shuffled on initialization', function(done) {
     callbacks.success = function(deck) {
