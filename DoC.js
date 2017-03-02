@@ -32,10 +32,12 @@
   // TODO: Add unit tests
   // TODO: Add description to methods...
 
-  var shuffleDeck = function(callback, deckID) {
+
+
+  var shuffleDeck = function(callbacks, deckID) {
     // TODO: Default parameters and validity checking
     var apiAction = API_ENDPOINT + '/deck/' + deckID + '/shuffle/';
-    request('GET', apiAction, callback);
+    request('GET', apiAction, callbacks);
   };
 
   /**
@@ -46,12 +48,12 @@
    *         {string} parameters.deckID The ID of the deck to draw from. This parameter is required.
    *         {number} parameters.numCards The number of cards to draw from the deck. Defaults to 1.
    * @return {object} deck Represents current status of deck. Has the follwing properties:
-   *         {bool}   success True if operation was completed successfully
-   *         {array}  cards Array of cards objects. Each object has following properties:
-   *         {string} image Url containing picture of card type
-   *         {string} value Non-suit value of card (2-10, JACK, QUEEN, KING, ACE)
-   *         {string} suit Suit value of card (HEARTS, CLUBS, SPADES, DIAMONDS)
-   *         {string} code Two character code for Value and Suit combination of card. The
+   *         {bool}   deck.success True if operation was completed successfully
+   *         {array}  deck.cards Array of cards objects. Each object has following properties:
+   *         {string} deck.cards.image Url containing picture of card type
+   *         {string} deck.cards.value Non-suit value of card (2-10, JACK, QUEEN, KING, ACE)
+   *         {string} deck.cards.suit Suit value of card (HEARTS, CLUBS, SPADES, DIAMONDS)
+   *         {string} deck.cards.code Two character code for Value and Suit combination of card. The
    *                       Ace of Spades would have a code of "AS"
    */
   var drawFromDeck = function(callbacks, parameters) {
@@ -76,10 +78,10 @@
    *                  1 deck gives 52 cards, 2 decks gives 104, etc. Defaults to one. If a value is specified
    *                  for the partialDeck parameter this value is ignored.
    * @return {object} deck Represents current status of  Has the following properties:
-   *         {bool}   success True if operation was completed successfully
-   *         {string} deck_id Unique ID for this deck
-   *         {bool}   shuffled True if deck was shuffled.
-   *         {number} remaining Amount of cards currently in deck
+   *         {bool}   deck.success True if operation was completed successfully
+   *         {string} deck.deck_id Unique ID for this deck
+   *         {bool}   deck.shuffled True if deck was shuffled.
+   *         {number} deck.remaining Amount of cards currently in deck
    */
   var createDeck = function(callbacks, parameters) {
     var apiAction = API_ENDPOINT + '/deck/new/';
