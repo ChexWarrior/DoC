@@ -61,7 +61,7 @@ describe('A new deck', function() {
   });
 });
 
-describe('Drawing from a deck created with no parameters', function() {
+describe('Drawing from a deck', function() {
   // deck created with no parameters
   var deckID;
   var callbacks = {};
@@ -76,7 +76,7 @@ describe('Drawing from a deck created with no parameters', function() {
     });
   });
 
-  it('only draws one card if no numCards parameter specified', function(done) {
+  it('returns one card if no numCards parameter specified', function(done) {
     var success = function(response) {
       expect(response.cards.length).toBe(1);
       done();
@@ -84,5 +84,15 @@ describe('Drawing from a deck created with no parameters', function() {
 
     callbacks.success = success;
     DoC.drawFromDeck(callbacks, { deckID: deckID });
+  });
+
+  it('returns an amount of cards equal to numCards parameter', function(done) {
+    var success = function(response) {
+      expect(response.cards.length).toEqual(3);
+      done();
+    };
+
+    callbacks.success = success;
+    DoC.drawFromDeck(callbacks, { deckID: deckID, numCards: 3});
   });
 });
