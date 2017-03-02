@@ -62,12 +62,10 @@ describe('A new deck', function() {
 });
 
 describe('Drawing from a deck', function() {
-  // deck created with no parameters
   var deckID;
   var callbacks = {};
 
   beforeAll(function(done) {
-    // create the default deck
     DoC.createDeck({
       success: function(deck) {
         deckID = deck.deck_id;
@@ -94,5 +92,29 @@ describe('Drawing from a deck', function() {
 
     callbacks.success = success;
     DoC.drawFromDeck(callbacks, { deckID: deckID, numCards: 3});
+  });
+});
+
+describe('Shuffling a deck', function() {
+  var deckID;
+
+  beforeAll(function(done) {
+    DoC.createDeck({
+      success: function(deck) {
+        deckID = deck.deck_id;
+        done();
+      }
+    });
+  });
+
+  it('returns true when successful', function(done) {
+    var success = function(deck) {
+      expect(deck.success).toBe(true);
+      done();
+    };
+
+    DoC.shuffleDeck({
+      success: success
+    }, deckID);
   });
 });
