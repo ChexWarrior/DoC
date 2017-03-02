@@ -60,3 +60,29 @@ describe('A new deck', function() {
     DoC.createDeck(callbacks, parameters);
   });
 });
+
+describe('Drawing from a deck created with no parameters', function() {
+  // deck created with no parameters
+  var deckID;
+  var callbacks = {};
+
+  beforeAll(function(done) {
+    // create the default deck
+    DoC.createDeck({
+      success: function(deck) {
+        deckID = deck.deck_id;
+        done();
+      }
+    });
+  });
+
+  it('only draws one card if no numCards parameter specified', function(done) {
+    var success = function(response) {
+      expect(response.cards.length).toBe(1);
+      done();
+    };
+
+    callbacks.success = success;
+    DoC.drawFromDeck(callbacks, { deckID: deckID });
+  });
+});
