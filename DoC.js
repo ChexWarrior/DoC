@@ -124,23 +124,35 @@
     request('GET', apiAction, callbacks);
   };
 
-  var addToPile = function(callback, pileName, sourceDeck, cardsToAdd) {
+  var addToPile = function(callbacks, parameters) {
     // TODO: Default parameters and validity checking
-    var apiAction = API_ENDPOINT + '/deck/' + sourceDeck + '/pile/' + pileName + '/add/';
+    //pileName, sourceDeck, cardsToAdd
+    var apiAction = API_ENDPOINT + '/deck/';
+    var deckID = '';
+    var pileName = '';
     var addedCards = '';
+    var cardsToAdd = '';
 
-    if(cardsToAdd.length > 0) {
-      addedCards = '?cards=';
-      cardsToAdd.forEach(function(card) {
-        addedCards += card.code + ',';
-      });
+    if(parameters) {
+      if(parameters.deckID) deckID = parameters.deckID;
+      if(parameters.pileName) pileName = parameters.pileName;
+      if(parameters.cardsToAdd) {
+        cardsToAdd = parameters.cardsToAdd;
 
-      // remove trailing comma
-      addedCards = addedCards.substr(0, addedCards.lastIndexOf(','));
+        if(cardsToAdd.length > 0) {
+          addedCards = '?cards=';
+          cardsToAdd.forEach(function(card) {
+            addedCards += card.code + ',';
+          });
+
+          // remove trailing comma
+          addedCards = addedCards.substr(0, addedCards.lastIndexOf(','));
+        }
+      }
     }
 
-    apiAction += addedCards;
-    request('GET', apiAction, callback);
+    apiAction += deckID + '/pile/' + pileName + '/add/' + addedCards;
+    request('GET', apiAction, callbacks);
   };
 
   // create final DoC object
