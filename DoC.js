@@ -33,7 +33,13 @@
   // TODO: Add description to methods...
 
 
-
+  /**
+   * @param  {object} callbacks Should consist of three properties: success, failure, complete
+   *                  Each callback should take one parameter that will represent the deck in case
+   *                  off success and the error object in case of failure.
+   * @param  {string} deckID - The id of an existing deck
+   * @return {object} deck
+   */
   var shuffleDeck = function(callbacks, deckID) {
     // TODO: Default parameters and validity checking
     var apiAction = API_ENDPOINT + '/deck/' + deckID + '/shuffle/';
