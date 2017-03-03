@@ -1,75 +1,57 @@
 describe('A new deck', function() {
-  var callbacks = {};
-  var parameters = {};
-  var resetParameters = function() {
-    callbacks = {};
-    parameters = {};
-  };
-
   it('can be called with no parameters', function(done) {
-    callbacks.success = function(deck) {
+    var success = function(deck) {
       expect(deck.deck_id).toEqual(jasmine.anything());
       done();
     };
 
-    DoC.createDeck(callbacks);
+    DoC.createDeck().then(success);
   });
 
   it('can be shuffled on initialization', function(done) {
-    callbacks.success = function(deck) {
+    var success = function(deck) {
       expect(deck.shuffled).toBe(true);
       done();
     };
 
-    parameters.shuffle = true;
-    DoC.createDeck(callbacks, parameters);
+    DoC.createDeck({ shuffle: true }).then(success);
   });
 
   it('can contain multiple decks', function(done) {
-    resetParameters();
-    callbacks.success = function(deck) {
+    var success = function(deck) {
       expect(deck.remaining).toBe(156);
       done();
     };
 
-    parameters.numDecks = 3;
-    DoC.createDeck(callbacks, parameters);
+    DoC.createDeck({ numDecks: 3 }).then(success);
   });
 
   it('can contain a partial amount of cards', function(done) {
-    resetParameters();
-    callbacks.success = function(deck) {
+    var success = function(deck) {
       expect(deck.remaining).toBe(4);
       done();
     };
 
-    parameters.partialDeck = [ 'AS', 'AC', 'AD', 'AH' ];
-    DoC.createDeck(callbacks, parameters);
+    DoC.createDeck({ partialDeck: [ 'AS', 'AC', 'AD', 'AH' ] }).then(success);
   });
 
   it('initialized as a partial deck and multiple decks only includes partial cards', function(done) {
-    resetParameters();
-    callbacks.success = function(deck) {
+    var success = function(deck) {
       expect(deck.remaining).toBe(3);
       done();
     };
 
-    parameters.partialDeck = ['AS', 'AD', 'AH'];
-    parameters.numDecks = 3;
-    DoC.createDeck(callbacks, parameters);
+    DoC.createDeck({ partialDeck: ['AS', 'AD', 'AH'], numDecks: 3 }).then(success);
   });
 });
 
 describe('Drawing from a deck', function() {
   var deckID;
-  var callbacks = {};
 
   beforeAll(function(done) {
-    DoC.createDeck({
-      success: function(deck) {
-        deckID = deck.deck_id;
-        done();
-      }
+    DoC.createDeck().then(function(deck) {
+      deckID = deck.deck_id;
+      done();
     });
   });
 
@@ -79,8 +61,7 @@ describe('Drawing from a deck', function() {
       done();
     };
 
-    callbacks.success = success;
-    DoC.drawFromDeck(callbacks, { deckID: deckID });
+    DoC.drawFromDeck({ deckID: deckID }).then(success);
   });
 
   it('returns an amount of cards equal to numCards parameter', function(done) {
@@ -89,8 +70,7 @@ describe('Drawing from a deck', function() {
       done();
     };
 
-    callbacks.success = success;
-    DoC.drawFromDeck(callbacks, { deckID: deckID, numCards: 3});
+    DoC.drawFromDeck({ deckID: deckID, numCards: 3}).then(success);
   });
 });
 
