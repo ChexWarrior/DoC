@@ -1,4 +1,3 @@
-
 describe('A new deck', function() {
   var callbacks = {};
   var parameters = {};
@@ -116,5 +115,39 @@ describe('Shuffling a deck', function() {
     DoC.shuffleDeck({
       success: success
     }, deckID);
+  });
+});
+
+describe('A new pile', function() {
+  var deckID;
+
+  beforeAll(function(done) {
+    DoC.createDeck({
+      success: function(deck) {
+        deckID = deck.deck_id;
+        done();
+      }
+    });
+  });
+
+  it('will only contain the cards added', function(done) {
+    var drawSuccess = function(deck) {
+      DoC.addToPile({ success: addSuccess }, { 
+        deckID: deckID, 
+        pileName: 'discard',
+        cardsToAdd: deck.cards
+      });
+    };
+
+    var addSuccess = function(deck) {
+      expect(deck.piles.discard).toEqual(jasmine.anything());
+      expect(deck.piles.discard.remaining).toEqual(3);
+      done();
+    };
+
+    DoC.drawFromDeck({ success: drawSuccess}, {
+      deckID: deckID,
+      numCards: 3
+    });
   });
 });
