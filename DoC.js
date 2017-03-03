@@ -1,9 +1,12 @@
 /**
  * @typedef Deck
- * @property {bool}   success   - If true indicates that the last API operation performed on deck was a success.
- * @property {string} deck_id   - The unique identifier of the deck.
- * @property {bool}   shuffled  - If true indicates the deck was shuffled.
- * @property {number} remaining - The amount of cards left in the deck.
+ * @property {bool}   success                  - If true indicates that the last API operation performed on deck was a success.
+ * @property {string} deck_id                  - The unique identifier of the deck.
+ * @property {bool}   shuffled                 - If true indicates the deck was shuffled.
+ * @property {number} remaining                - The amount of cards left in the deck.
+ * @property {object} piles                    - An object containing the piles create from current deck
+ * @property {object} piles.pileName           - A pile object created from deck
+ * @property {object} piles.pileName.remaining - Number of cards remaining in pile
  *
  * @typedef DeckDraw
  * @property {bool}   success       - If true indicates that the last API operation performed on deck was a success.
@@ -118,6 +121,14 @@
     return request('GET', apiAction);
   };
 
+  /**
+   * @function addToPile
+   * @param {object} parameters
+   * @param {string} parameters.deckID The identifier of the deck from which the cards added to the pile will come
+   * @param {string} parameters.pileName The name of the pile to add the cards.
+   * @param {array}  parameters.cardsToAdd An array of card objects that represent the cards added to the pile
+   * @return {Deck}
+   */
   var addToPile = function(parameters) {
     var apiAction = API_ENDPOINT + '/deck/';
     var deckID = '';
