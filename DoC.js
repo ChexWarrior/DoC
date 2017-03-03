@@ -1,31 +1,29 @@
 (function() {
   var API_ENDPOINT = 'https://deckofcardsapi.com/api';
 
-  var request = function(method, uri, callbacks) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, uri, true);
-    xhr.responseType = 'json';
+  var request = function(method, uri) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, uri, true);
+      xhr.responseType = 'json';
 
-    xhr.onload = function(event) {
-      if(callbacks) {
-        if(this.status === 200) {
-          if(callbacks.success) callbacks.success(this.response);
-        } else {
-          if(callbacks.failure) callbacks.failure(this.response);
+      xhr.onload = function(event) {
+        if(callbacks) {
+          if(this.status === 200) {
+            resolve(this.response);
+          } else {
+            reject(req.status);
+          }
+
         }
+      };
 
-        if(callbacks.complete) callbacks.complete(this.response);
-      }
-    };
+      xhr.onerror = function(error) {
+        reject(error);
+      };
 
-    xhr.onerror = function(error) {
-      if(callbacks) {
-        if(callbacks.failure) callbacks.failure(error);
-        if(callbacks.complete) callbacks.complete(error);
-      }
-    };
-
-    xhr.send();
+      xhr.send();
+    });
   };
 
   // TODO: Change methods to take error and success callbacks
@@ -89,7 +87,7 @@
    *         {bool}   deck.shuffled True if deck was shuffled.
    *         {number} deck.remaining Amount of cards currently in deck
    */
-  var createDeck = function(callbacks, parameters) {
+  var createDeck = function(parameters) {
     var apiAction = API_ENDPOINT + '/deck/new/';
     var partialDeck = '';
     var startingCards = [];
@@ -121,7 +119,7 @@
       }
     }
 
-    request('GET', apiAction, callbacks);
+    request('GET', apiAction);
   };
 
   var addToPile = function(callbacks, parameters) {
