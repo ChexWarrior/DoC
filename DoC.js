@@ -1,3 +1,24 @@
+/**
+ * @typedef Deck
+ * @property {bool}   success   - If true indicates that the last API operation performed on deck was a success.
+ * @property {string} deck_id   - The unique identifier of the deck.
+ * @property {bool}   shuffled  - If true indicates the deck was shuffled.
+ * @property {number} remaining - The amount of cards left in the deck.
+ *
+ * @typedef DeckDraw
+ * @property {bool}   success       - If true indicates that the last API operation performed on deck was a success.
+ * @property {array}  cards         - Contains the card objects drawn from the deck.
+ * @property {string} cards[].image - Contains a url to an image of the card type.
+ * @property {string} cards[].value - Non-suit value of card, will be one of the following: 2-10, JACK, QUEEN, KING or ACE.
+ * @property {string} cards[].suit  - Suit value of card, will be one of the following: HEARTS, CLUBS, SPADES or DIAMONDS.
+ * @property {string} cards[].code  - Two character code for Value and Suit combination of card. The Ace of Spades would 
+ *                                    have a code of "AS".
+ * @property {string} deck_id       - The unique identifier of the deck.
+ * @property {number} remaining     - The amount of cards left in the deck.
+ */
+
+
+
 (function() {
   var API_ENDPOINT = 'https://deckofcardsapi.com/api';
 
@@ -23,17 +44,9 @@
     });
   };
 
-  // TODO: Change methods to take error and success callbacks
-  // TODO: Add unit tests
-  // TODO: Add description to methods...
-
-
   /**
-   * @param  {object} callbacks Should consist of three properties: success, failure, complete
-   *                  Each callback should take one parameter that will represent the deck in case
-   *                  off success and the error object in case of failure.
    * @param  {string} deckID - The id of an existing deck
-   * @return {object} deck
+   * @return {Deck | Error}
    */
   var shuffleDeck = function(deckID) {
     // TODO: Default parameters and validity checking
@@ -42,17 +55,10 @@
   };
 
   /**
-   * @param  {object} parameters Can consist of two properties
-   *         {string} parameters.deckID The ID of the deck to draw from. This parameter is required.
-   *         {number} parameters.numCards The number of cards to draw from the deck. Defaults to 1.
-   * @return {object} deck Represents current status of deck. Has the follwing properties:
-   *         {bool}   deck.success True if operation was completed successfully
-   *         {array}  deck.cards Array of cards objects. Each object has following properties:
-   *         {string} deck.cards.image Url containing picture of card type
-   *         {string} deck.cards.value Non-suit value of card (2-10, JACK, QUEEN, KING, ACE)
-   *         {string} deck.cards.suit Suit value of card (HEARTS, CLUBS, SPADES, DIAMONDS)
-   *         {string} deck.cards.code Two character code for Value and Suit combination of card. The
-   *                       Ace of Spades would have a code of "AS"
+   * @param  {object} parameters          - Can consist of two properties
+   *         {string} parameters.deckID   - The ID of the deck to draw from. This parameter is required.
+   *         {number} parameters.numCards - The number of cards to draw from the deck. Defaults to 1.
+   * @return {DeckDraw | Error}
    */
   var drawFromDeck = function(parameters) {
     var apiAction = API_ENDPOINT + /deck/;
@@ -114,8 +120,6 @@
   };
 
   var addToPile = function(parameters) {
-    // TODO: Default parameters and validity checking
-    //pileName, sourceDeck, cardsToAdd
     var apiAction = API_ENDPOINT + '/deck/';
     var deckID = '';
     var pileName = '';
