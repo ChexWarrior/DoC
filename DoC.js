@@ -45,6 +45,7 @@
   };
 
   /**
+   * @function shuffleDeck
    * @param  {string} deckID - The id of an existing deck
    * @return {Deck | Error}
    */
@@ -55,9 +56,10 @@
   };
 
   /**
+   * @function drawFromDeck
    * @param  {object} parameters          - Can consist of two properties
-   *         {string} parameters.deckID   - The ID of the deck to draw from. This parameter is required.
-   *         {number} parameters.numCards - The number of cards to draw from the deck. Defaults to 1.
+   * @param  {string} parameters.deckID   - The ID of the deck to draw from. This parameter is required.
+   * @param  {number} parameters.numCards - The number of cards to draw from the deck. Defaults to 1.
    * @return {DeckDraw | Error}
    */
   var drawFromDeck = function(parameters) {
@@ -72,17 +74,14 @@
   }
 
   /**
-   * @param  {object} parameters Can consist of three properties:
-   *         {bool}   parameters.shuffle If true the deck will be shuffled on creation. Defaults to false.
-   *         {array}  parameters.partialDeck An array of card codes that the deck will contain if the array isn't empty.
-   *         {number} parameters.numDecks The amount of cards this deck will contain based on amount of decks.
-   *                  1 deck gives 52 cards, 2 decks gives 104, etc. Defaults to one. If a value is specified
-   *                  for the partialDeck parameter this value is ignored.
-   * @return {object} deck Represents current status of  Has the following properties:
-   *         {bool}   deck.success True if operation was completed successfully
-   *         {string} deck.deck_id Unique ID for this deck
-   *         {bool}   deck.shuffled True if deck was shuffled.
-   *         {number} deck.remaining Amount of cards currently in deck
+   * @function createDeck
+   * @param  {object} parameters             - Can consist of three properties:
+   * @param  {bool}   parameters.shuffle     - If true the deck will be shuffled on creation. Defaults to false.
+   * @param  {array}  parameters.partialDeck - An array of card codes that the deck will contain if the array isn't empty.
+   * @param  {number} parameters.numDecks    - The amount of cards this deck will contain based on amount of decks.
+   *                                           1 deck gives 52 cards, 2 decks gives 104, etc. Defaults to one. If a 
+   *                                           value is specified for the partialDeck parameter this value is ignored.
+   * @return {Deck | Error}
    */
   var createDeck = function(parameters) {
     var apiAction = API_ENDPOINT + '/deck/new/';
