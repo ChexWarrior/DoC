@@ -78,11 +78,9 @@ describe('Shuffling a deck', function() {
   var deckID;
 
   beforeAll(function(done) {
-    DoC.createDeck({
-      success: function(deck) {
-        deckID = deck.deck_id;
-        done();
-      }
+    DoC.createDeck().then(function(deck) {
+      deckID = deck.deck_id;
+      done();
     });
   });
 
@@ -92,9 +90,7 @@ describe('Shuffling a deck', function() {
       done();
     };
 
-    DoC.shuffleDeck({
-      success: success
-    }, deckID);
+    DoC.shuffleDeck(deckID).then(success);
   });
 });
 
@@ -102,17 +98,15 @@ describe('A new pile', function() {
   var deckID;
 
   beforeAll(function(done) {
-    DoC.createDeck({
-      success: function(deck) {
-        deckID = deck.deck_id;
-        done();
-      }
+    DoC.createDeck().then(function(deck) {
+      deckID = deck.deck_id;
+      done();
     });
   });
 
   it('will only contain the cards added', function(done) {
     var drawSuccess = function(deck) {
-      DoC.addToPile({ success: addSuccess }, { 
+      return DoC.addToPile({ 
         deckID: deckID, 
         pileName: 'discard',
         cardsToAdd: deck.cards
@@ -125,9 +119,9 @@ describe('A new pile', function() {
       done();
     };
 
-    DoC.drawFromDeck({ success: drawSuccess}, {
+    DoC.drawFromDeck({
       deckID: deckID,
       numCards: 3
-    });
+    }).then(drawSuccess).then(addSuccess);
   });
 });
