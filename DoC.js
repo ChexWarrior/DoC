@@ -8,13 +8,10 @@
       xhr.responseType = 'json';
 
       xhr.onload = function(event) {
-        if(callbacks) {
-          if(this.status === 200) {
-            resolve(this.response);
-          } else {
-            reject(req.status);
-          }
-
+        if(this.status === 200) {
+          resolve(this.response);
+        } else {
+          reject(req.status);
         }
       };
 
@@ -38,16 +35,13 @@
    * @param  {string} deckID - The id of an existing deck
    * @return {object} deck
    */
-  var shuffleDeck = function(callbacks, deckID) {
+  var shuffleDeck = function(deckID) {
     // TODO: Default parameters and validity checking
     var apiAction = API_ENDPOINT + '/deck/' + deckID + '/shuffle/';
-    request('GET', apiAction, callbacks);
+    return request('GET', apiAction);
   };
 
   /**
-   * @param  {object} callbacks Should consist of three properties: success, failure, complete
-   *                  Each callback should take one parameter that will represent the deck in case
-   *                  off success and the error object in case of failure.
    * @param  {object} parameters Can consist of two properties
    *         {string} parameters.deckID The ID of the deck to draw from. This parameter is required.
    *         {number} parameters.numCards The number of cards to draw from the deck. Defaults to 1.
@@ -60,7 +54,7 @@
    *         {string} deck.cards.code Two character code for Value and Suit combination of card. The
    *                       Ace of Spades would have a code of "AS"
    */
-  var drawFromDeck = function(callbacks, parameters) {
+  var drawFromDeck = function(parameters) {
     var apiAction = API_ENDPOINT + /deck/;
 
     if(parameters) {
@@ -68,13 +62,10 @@
       if (parameters.numCards) apiAction += '?count=' + parameters.numCards;
     }
     
-    request('GET', apiAction, callbacks);
+    return request('GET', apiAction);
   }
 
   /**
-   * @param  {object} callbacks Should consist of three properties: success, failure, complete
-   *                  Each callback should take one parameter that will represent the deck in case
-   *                  off success and the error object in case of failure.
    * @param  {object} parameters Can consist of three properties:
    *         {bool}   parameters.shuffle If true the deck will be shuffled on creation. Defaults to false.
    *         {array}  parameters.partialDeck An array of card codes that the deck will contain if the array isn't empty.
@@ -119,10 +110,10 @@
       }
     }
 
-    request('GET', apiAction);
+    return request('GET', apiAction);
   };
 
-  var addToPile = function(callbacks, parameters) {
+  var addToPile = function(parameters) {
     // TODO: Default parameters and validity checking
     //pileName, sourceDeck, cardsToAdd
     var apiAction = API_ENDPOINT + '/deck/';
@@ -150,7 +141,7 @@
     }
 
     apiAction += deckID + '/pile/' + pileName + '/add/' + addedCards;
-    request('GET', apiAction, callbacks);
+    return request('GET', apiAction);
   };
 
   // create final DoC object
