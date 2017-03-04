@@ -124,9 +124,9 @@
   /**
    * @function addToPile
    * @param {object} parameters
-   * @param {string} parameters.deckID The identifier of the deck from which the cards added to the pile will come
-   * @param {string} parameters.pileName The name of the pile to add the cards.
-   * @param {array}  parameters.cardsToAdd An array of card objects that represent the cards added to the pile
+   * @param {string} parameters.deckID     - The identifier of the deck from which the cards added to the pile will come
+   * @param {string} parameters.pileName   - The name of the pile to add the cards.
+   * @param {array}  parameters.cardsToAdd - An array of card objects that represent the cards added to the pile
    * @return {Deck}
    */
   var addToPile = function(parameters) {
@@ -158,12 +158,47 @@
     return request('GET', apiAction);
   };
 
+  /**
+   * @function drawFromPile
+   * @param {object} parameters
+   * @param {string} parameters.deckID      - The identifier of the deck from which the pile is associated.
+   * @param {string} parameters.pileName    - The name of the pile to add the cards.
+   * @param {array}  parameters.cardsToDraw - An array of card objects that represent the cards drawn from to the pile.
+   * @return {Deck}
+   */
+  var drawFromPile = function(parameters) {
+    var apiAction = API_ENDPOINT + '/deck/';
+    var deckID = '';
+    var pileName = '';
+    var cardsToDraw = '';
+    var drawnCards = '';
+
+    if(parameters) {
+      if(parameters.deckID) deckID = parameters.deckID;
+      if(parameters.pileName) pileName = parameters.pileName;
+      if(parameters.cardsToDraw) {
+        cardsToDraw = parameters.cardsToDraw;
+        drawnCards = '?cards=';
+        cardsToDraw.forEach(function(card) {
+          drawnCards += card.code + ',';
+        });
+
+         // remove trailing comma
+        drawnCards = drawnCards.substr(0, drawnCards.lastIndexOf(','));
+      }
+    }
+
+    apiAction += deckID + '/pile/' + pileName + '/draw/' + drawnCards;
+    return request('GET', apiAction);
+  };
+
   // create final DoC object
   var DoC = {
     createDeck: createDeck,
     shuffleDeck: shuffleDeck,
     drawFromDeck: drawFromDeck,
-    addToPile: addToPile
+    addToPile: addToPile,
+    drawFromPile: drawFromPile
   };
 
   // attach to window
