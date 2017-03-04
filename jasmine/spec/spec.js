@@ -125,3 +125,50 @@ describe('A new pile', function() {
     }).then(drawSuccess).then(addSuccess);
   });
 });
+
+describe('Drawing from a pile', function() {
+  var deckID;
+  var cardsDrawn;
+  var pileName = 'graveyard';
+
+  beforeAll(function(done) {
+    var drawFromDeck = function(deck) {
+      deckID = deck.deck_id;
+      return DoC.drawFromDeck({
+        deckID: deckID,
+        numCards: 3
+      }); 
+    };
+
+    var addToPile = function(deck) {
+      cardsDrawn = deck.cards;
+      return DoC.addToPile({
+        deckID: deckID,
+        pileName: pileName,
+        cardsToAdd: cardsDrawn
+      });
+    };
+
+    var finishSetup = function(deck) {
+      done();
+    };
+
+    DoC.createDeck({ shuffle: true })
+      .then(drawFromDeck)
+      .then(addToPile)
+      .then(finishSetup);
+  });
+
+  it('draw same cards added', function(done) {
+    var verifyDrawnCards = function(deck) {
+      expect(deck.piles[pileName].remaining).toEqual(0);
+      done();
+    };
+
+    DoC.drawFromPile({
+      deckID: deckID,
+      pileName: pileName,
+      cardsToDraw: cardsDrawn
+    }).then(verifyDrawnCards);
+  });
+});
